@@ -14,7 +14,8 @@ netatalk_global_settings: []
 #   path: /path/to/share
 #   owner: username
 #   group: groupname
-#   mode: 0XXX
-#   perms: ?
+#   mode: 0755  # unix directory mode
+#   fperm: 0660 # AFP ACL mode
+#   dperm: 0770 # AFP ACL mode
  
 
