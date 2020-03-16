@@ -1,0 +1,20 @@
+---
+netatalk_global_settings: []
+# - foo=bar
+# - bar=baz
+
+#netatalk_homes_path: /home
+
+#netatalk_timemachine_path: /path/to/tmbackups
+
+#netatalk_timemachine_users: "@group username"
+
+#netatalk_volumes:
+# - name: "share name"
+#   path: /path/to/share
+#   owner: username
+#   group: groupname
+#   mode: 0XXX
+#   perms: ?
+ 
+

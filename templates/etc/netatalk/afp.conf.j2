@@ -1,0 +1,36 @@
+;
+; Netatalk 3.x configuration file
+;
+[Global]
+log level = default:warn
+unix priv = yes
+{% if netatalk_global_settings is not none %}
+{% for item in netatalk_global_settings %}
+{{ item }}
+{% endfor %}
+{% endif %}
+{% if netatalk_homes_path is defined %}
+
+[Homes]
+basedir regex = {{ netatalk_homes_path }}
+{% endif %}
+{% if netatalk_volumes is defined %}
+
+{% for item in netatalk_volumes %}
+[{{ item.name }}]
+path = {{ item.path }}
+{% if item.fperm is defined %}
+file perm = { item.fperm }
+{% endif %}
+{% if item.dperm is defined %}
+directory perm = { item.dperm }
+{% endif %}
+{% endfor %}
+{% endif %}
+
+{% if netatalk_timemachine_path is defined %}
+[Time Machine Backups]
+time machine = yes
+path = {{ netatalk_timemachine_path }}/$u/
+valid users = {{ netatalk_timemachine_users }}
+{% endif %}

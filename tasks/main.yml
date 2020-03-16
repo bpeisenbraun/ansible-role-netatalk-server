@@ -1,0 +1,52 @@
+---
+# Backup server config to set up Netatalk as a Time Machine target
+- name: Install and update packages
+  apt:
+    name: netatalk
+    state: present
+
+- name: Template Netatalk configuration
+  template:
+    src: "{{ item }}.j2"
+    dest: "/{{ item }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - etc/netatalk/afp.conf
+  notify:
+    - restart_netatalk
+
+- name: Ensure Netatalk volumes exist
+  file:
+    path: "{{ item.path }}"
+    state: directory
+    owner: "{{ item.owner|default('root') }}"
+    group: "{{ item.group|default('root') }}"
+    mode: "{{ item.mode|default(0755) }}"
+  with_items:
+    - "{{ netatalk_volumes }}"
+  when: netatalk_volumes is defined
+
+- name: Ensure Time Machine directory exists
+  file:
+    path: "{{ netatalk_timemachine_path }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  when: netatalk_timemachine_path is defined
+
+- name: Ensure Time Machine user directories exist
+  file:
+    path: "{{ netatalk_timemachine_path }}/{{ item.username }}"
+    state: directory
+    owner: "{{ item.username }}"
+    group: "{{ item.username }}"
+    mode: 0700
+  with_items:
+    - "{{ user_list }}"
+  when:
+    - netatalk_timemachine_path is defined
+    - '"tm" in item.groups'
+
